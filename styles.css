@@ -279,72 +279,38 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Holgura suficiente para que el offset de la box-shadow (8px) y el desplazamiento
-       en hover (translateY 5px) del botón no se acerquen al cta-url. */
-    gap: var(--space-5);
+    gap: var(--space-3);
 }
 
-/* ── Botón CTA ── */
-.alb {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 180px;
-  height: 50px;
-  border-radius: 30px;
-  background: #1800ad;
-  box-shadow: 8px 8px 0px #7ab32e;
-  overflow: hidden;
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out;
+/* Botón CTA: sólido verde corporativo con lift + sombra ampliada en hover */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 2.25rem;
+    background: var(--grad-green-strong);
+    color: #ffffff;
+    font-size: var(--fs-md);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 6px 18px rgba(122, 179, 46, 0.35);
+    transition:
+        transform var(--transition-base),
+        background var(--transition-base),
+        box-shadow var(--transition-base);
 }
 
-.alb:hover {
-  transform: translateY(5px);
-  box-shadow: 3px 3px 0px #7ab32e;
+.cta-button:hover,
+.cta-button:focus-visible {
+    transform: translateY(-3px);
+    background: var(--color-accent-dark);
+    box-shadow: 0 12px 28px rgba(122, 179, 46, 0.45);
 }
 
-.alb-svg {
-  position: absolute;
-  left: -30px;
-  top: 50%;
-  width: 60px;
-  height: 60px;
-  margin-top: -30px;
-  animation: alb-spin 5s linear infinite;
-  transition: width 300ms ease-in-out, left 300ms ease-in-out, height 300ms ease-in-out, margin-top 300ms ease-in-out;
-}
-
-.alb:hover .alb-svg {
-  left: 0;
-  width: 100%;
-  height: 100%;
-  margin-top: 0;
-  top: 0;
-}
-
-.alb-text {
-  position: relative;
-  z-index: 10;
-  font-weight: 600;
-  font-size: 1.1em;
-  color: #ffffff;
-  transition: color 300ms ease-in-out;
-}
-
-.alb:hover .alb-text {
-  color: transparent;
-}
-
-@keyframes alb-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .alb-svg { animation: none; }
+.cta-button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(122, 179, 46, 0.4);
 }
 
 .cta-url {
