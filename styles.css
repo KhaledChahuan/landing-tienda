@@ -156,24 +156,17 @@ a {
 
 
 /* ============================================
-   4. PLACEHOLDERS (logos e imágenes)
+   4. LOGOS E IMÁGENES
    ============================================ */
-.logo-placeholder {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    background: var(--color-primary);
-    color: var(--color-text-light);
-    border-radius: var(--radius-sm);
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    font-size: var(--fs-sm);
+.logo {
+    display: block;
+    height: auto;
+    max-height: 48px;
+    width: auto;
 }
 
-.logo-placeholder--small {
-    padding: 0.35rem 0.75rem;
-    font-size: var(--fs-xs);
+.logo--small {
+    max-height: 32px;
 }
 
 
@@ -291,69 +284,61 @@ a {
     gap: var(--space-3);
 }
 
-/* Botón CTA con pulso sutil + subrayado SVG animado en loop infinito.
-   La animación de "draw → erase" se repite para mantener atención sin saturar. */
-.cta-button-animated {
+/* Botón CTA: animated-layer-button.
+   SVG circular del logo rota en loop y, al hover, se expande cubriendo el botón
+   mientras el texto se desvanece. Sombra offset verde Cencocal que colapsa al pulsar. */
+.animated-layer-button {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1.15rem 2.75rem 1.6rem;
-    background: var(--color-primary);
-    color: var(--color-text-light);
-    font-size: var(--fs-md);
-    font-weight: 600;
-    border-radius: var(--radius-pill);
-    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
-    animation: button-pulse 4s ease-in-out infinite;
-    transition: background var(--transition-base);
-    will-change: transform, box-shadow;
-    isolation: isolate;
+    width: 200px;
+    height: 55px;
+    border-radius: 30px;
+    background: #1800ad;
+    box-shadow: 8px 8px 0px #7ab32e;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+    text-decoration: none;
+    border: none;
 }
 
-.cta-text {
-    position: relative;
-    z-index: 2;
-    /* Entrada sutil al cargar */
-    animation: fadeInUp 0.6s ease-out 0.1s both;
+.animated-layer-button:hover {
+    transform: translateY(5px);
+    box-shadow: 3px 3px 0px #7ab32e;
 }
 
-/* SVG posicionado bajo el texto, ancho relativo al botón */
-.cta-underline {
+.button-svg {
     position: absolute;
-    left: 14%;
-    right: 14%;
-    bottom: 0.55rem;
-    width: auto;
-    height: 12px;
-    pointer-events: none;
-    overflow: visible;
-    z-index: 1;
+    width: 60px;
+    left: -30px;
+    height: auto;
+    transition: all 300ms ease-in-out;
+    animation: spin-slow 5s linear infinite;
 }
 
-.underline-path {
-    fill: none;
-    stroke: var(--grad-green-strong); /* #7ab32e */
-    stroke-width: 3;
-    stroke-linecap: round;
-    animation: underline-draw 3s ease-in-out infinite;
-    transition: stroke var(--transition-base), stroke-width var(--transition-base);
+.animated-layer-button:hover .button-svg {
+    width: 100%;
+    left: 0;
 }
 
-/* Hover: subrayado pasa a verde corporativo + ligero ensanche */
-.cta-button-animated:hover,
-.cta-button-animated:focus-visible {
-    background: var(--color-primary-dark);
+.button-text {
+    position: relative;
+    z-index: 10;
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #ffffff;
+    transition: color 300ms ease-in-out;
 }
 
-.cta-button-animated:hover .underline-path,
-.cta-button-animated:focus-visible .underline-path {
-    stroke: var(--color-accent); /* #a2d644 */
-    stroke-width: 4;
+.animated-layer-button:hover .button-text {
+    color: transparent;
 }
 
-.cta-button-animated:active {
-    transform: scale(0.98);
+.animated-layer-button:focus-visible {
+    outline: 2px solid #7ab32e;
+    outline-offset: 2px;
 }
 
 .cta-url {
@@ -437,24 +422,12 @@ a {
     box-shadow: var(--shadow-lg);
 }
 
-.branch-image-placeholder {
-    aspect-ratio: 16 / 9;
-    background:
-        linear-gradient(135deg, rgba(var(--primary-rgb), 0.92), rgba(var(--primary-rgb), 0.78)),
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 12px,
-            rgba(255, 255, 255, 0.04) 12px,
-            rgba(255, 255, 255, 0.04) 24px
-        );
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: var(--fs-sm);
-    font-weight: 500;
-    letter-spacing: 0.02em;
+.branch-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: rgba(var(--primary-rgb), 0.08);
 }
 
 .branch-body {
@@ -552,11 +525,6 @@ a {
     gap: var(--space-4);
 }
 
-.site-footer .logo-placeholder {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--color-text-light);
-}
-
 .footer-text {
     font-size: var(--fs-xs);
     color: rgba(255, 255, 255, 0.75);
@@ -584,32 +552,10 @@ a {
     100% { --gradient-angle: 360deg; }
 }
 
-/* Subrayado animado del CTA: draw (0→50%) → erase (50→100%) en loop */
-@keyframes underline-draw {
-    0% {
-        stroke-dasharray: 0 1000;
-        stroke-dashoffset: 0;
-    }
-    50% {
-        stroke-dasharray: 1000 0;
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dasharray: 0 1000;
-        stroke-dashoffset: -1000;
-    }
-}
-
-/* Pulso sutil del CTA con cambio de tinte de sombra azul → verde */
-@keyframes button-pulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
-    }
-    50% {
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(122, 179, 46, 0.4);
-    }
+/* Rotación lenta del SVG circular del CTA en loop */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
 /* Respeta usuarios con preferencia de movimiento reducido */
@@ -632,14 +578,10 @@ a {
         border: 2px solid var(--color-accent);
     }
 
-    /* El subrayado animado también necesita fallback: detenido en frame final
-       quedaría invisible. Lo mostramos sólido y sin pulso. */
-    .cta-button-animated {
+    /* CTA: detenemos la rotación del SVG (la regla global ya neutraliza el spin,
+       este bloque es por claridad). El botón sigue funcionando sin animación. */
+    .button-svg {
         animation: none;
-    }
-    .underline-path {
-        animation: none;
-        stroke-dasharray: 0;
     }
 }
 
@@ -652,17 +594,9 @@ a {
         padding: var(--space-7) 0 var(--space-8);
     }
 
-    .cta-button-animated {
-        padding: 1rem 1.5rem 1.5rem;
-        font-size: var(--fs-base);
-        width: 100%;
-        max-width: 320px;
-    }
-
-    .cta-underline {
-        left: 10%;
-        right: 10%;
-        bottom: 0.45rem;
+    .animated-layer-button {
+        width: 180px;
+        height: 50px;
     }
 
     .branch-body {

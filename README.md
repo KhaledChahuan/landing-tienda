@@ -13,25 +13,33 @@ Landing page estática que se sirve desde **tiendacencocal.com** y dirige el tr�
 
 ```
 .
-├── index.html       # Markup principal con comentarios donde van las imágenes
-├── styles.css       # Estilos organizados por secciones
+├── index.html              # Markup principal
+├── styles.css              # Estilos organizados por secciones
+├── vercel.json             # Configuración de deploy (cleanUrls)
+├── assets/
+│   └── images/             # Logos y fotos (ver "Assets pendientes")
 └── README.md
 ```
 
-## Imágenes pendientes
+## Assets pendientes
 
-En el HTML quedaron placeholders comentados con `<!-- ... -->` en los siguientes lugares:
+Los siguientes archivos deben colocarse en `./assets/images/` con los nombres exactos referenciados en `index.html`:
 
-| Ubicación | Archivo sugerido |
-|---|---|
-| Header (logo principal) | `logo-cencocal.svg` |
-| Footer (logo pequeño) | `logo-cencocal-sm.svg` |
-| Card sucursal La Calera | `sucursal-la-calera.jpg` |
-| Card sucursal Villa Alemana | `sucursal-villa-alemana.jpg` |
-| Open Graph (compartir en redes) | `og-image.jpg` (1200×630) |
-| Favicon | `favicon.svg` o `favicon.ico` |
+| Archivo | Uso | Formato | Dimensiones recomendadas |
+|---|---|---|---|
+| `logo-cencocal.png` | Logo principal (header) | PNG transparente | ~200–300 px de ancho |
+| `logo-footer.png` | Logo en footer | PNG transparente (versión clara para fondo oscuro) | ~100–150 px de ancho |
+| `sucursal-la-calera.jpg` | Card sucursal La Calera | JPG optimizado | ~800×600 px (ratio 4:3) |
+| `sucursal-villa-alemana.jpg` | Card sucursal Villa Alemana | JPG optimizado | ~800×600 px (ratio 4:3) |
 
-Reemplazar cada `<div class="...-placeholder">` por el `<img>` correspondiente cuando los assets estén disponibles.
+### Assets opcionales (mejoras de SEO/branding)
+
+| Archivo | Uso | Dimensiones |
+|---|---|---|
+| `og-image.jpg` | Open Graph (compartir en redes) | 1200×630 px |
+| `favicon.svg` o `favicon.ico` | Favicon del sitio | 32×32 / 512×512 |
+
+> Mientras los archivos no existan, las imágenes se romperán visualmente. Las `<img>` ya están maquetadas con `loading="lazy"` y dimensiones definidas vía CSS (`aspect-ratio: 4/3` en las sucursales, `max-height` en los logos) para evitar layout shift cuando se carguen.
 
 ## Desarrollo local
 
