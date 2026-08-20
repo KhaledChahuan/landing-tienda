@@ -35,6 +35,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
+
+    <!--
+        Puente de campañas.
+
+        Quien llega por un QR trae parámetros utm_* en la URL: no vino a leer el aviso de mudanza,
+        vino a comprar. A esa visita se la manda derecho a la tienda, arrastrando los mismos UTM
+        para que la analítica de tienda.cencocal.cl atribuya la venta a la campaña correcta.
+
+        Solo se reenvía si hay utm_source. Quien llega por Google, por un enlace o escribiendo la
+        dirección ve la landing completa, igual que siempre.
+
+        El reenvío espera a DOMContentLoaded a propósito: el contador de escaneos (qr-scan.js, más
+        abajo) carga con defer, y los scripts diferidos se ejecutan antes de ese evento. Así el
+        escaneo alcanza a contarse antes de que la página se vaya.
+    -->
+    <script>
+        (function () {
+            // Con /home explícito, no con la raíz: tienda.cencocal.cl/ responde 302 hacia /home
+            // descartando la query, y ahí se perderían los UTM justo antes de llegar. Verificado
+            // en agosto de 2026; si algún día cambia su enrutamiento, hay que revisar esta línea.
+            var STORE = 'https://tienda.cencocal.cl/home'
+            try {
+                var params = new URLSearchParams(window.location.search)
+                if (!params.get('utm_source')) return
+
+                var target = new URL(STORE)
+                params.forEach(function (value, key) {
+                    if (key.slice(0, 4) === 'utm_') target.searchParams.set(key, value)
+                })
+
+                // Se marca ya, durante el parseo, para no alcanzar a mostrar la landing entera y
+                // hacerla desaparecer un parpadeo después.
+                document.documentElement.className += ' is-forwarding'
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Enlace de respaldo visible: si el reenvío no ocurre (JavaScript bloqueado a
+                    // medias, extensión de por medio), la persona no queda mirando una pantalla en
+                    // blanco.
+                    var notice = document.createElement('div')
+                    notice.className = 'forwarding-notice'
+
+                    var text = document.createElement('p')
+                    text.textContent = 'Te llevamos a la tienda…'
+
+                    var link = document.createElement('a')
+                    link.setAttribute('href', target.toString())
+                    link.setAttribute('rel', 'noopener')
+                    link.textContent = 'Continuar a tienda.cencocal.cl'
+
+                    notice.appendChild(text)
+                    notice.appendChild(link)
+                    document.body.appendChild(notice)
+
+                    // replace y no href: el botón "atrás" del navegador vuelve al lector de QR, no
+                    // a esta página, que reenviaría otra vez.
+                    window.location.replace(target.toString())
+                })
+            } catch (e) {
+                // Ante cualquier problema, la landing se comporta como siempre.
+            }
+        })()
+    </script>
 </head>
 <body>
 
