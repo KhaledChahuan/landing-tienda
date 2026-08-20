@@ -134,5 +134,15 @@
         </div>
     </footer>
 
+    <!--
+        Contador de escaneos de QR de CencoLink.
+
+        Los QR de campaña (afiches, vitrinas, packaging) apuntan acá con parámetros utm_*. Este
+        script avisa al panel para que el escaneo quede contado; sin él la campaña se imprime pero
+        nadie sabe cuánta gente llegó por ella. Se sirve desde CencoLink: no hay nada que mantener
+        en esta landing. Si la URL no trae utm_source, no hace absolutamente nada.
+    -->
+    <script src="https://link.cencocal.com/qr-scan.js" defer></script>
+
 </body>
 </html>
