@@ -1,14 +1,5 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/((?!styles\\.css|assets/).*)",
-      "missing": [{ "type": "query", "key": "utm_source" }],
-      "destination": "https://tienda.cencocal.cl/home",
-      "statusCode": 301
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/gone" }],
   "headers": [
     {
       "source": "/(.*)",
